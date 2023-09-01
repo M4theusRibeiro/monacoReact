@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Monaco Editor Example</title>
+    <!-- Inclua os estilos do Monaco Editor -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs/editor/editor.main.css">
+</head>
+<body>
+    <!-- Crie um elemento DOM para conter o editor -->
+    <div id="editor-container" style="height: 500px;"></div>
+
+    <!-- Inclua os scripts do Monaco Editor -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs/loader.js"></script>
+    <script>
+        // Função de inicialização do editor
+        function initEditor() {
+            require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs' }});
+            require(['vs/editor/editor.main'], function() {
+                var container = document.getElementById('editor-container');
+                var editor = monaco.editor.create(container, {
+                    value: "// First line\nfunction hello() {\n\talert('Hello world!');\n}\n// Last line",
+                    language: 'javascript',
+                    lineNumbers: "on",
+                    roundedSelection: false,
+                    theme: "vs-dark",
+
+                });
+            });
+        }
+
+        // Chame a função de inicialização após a página ser carregada
+        window.onload = initEditor;
+    </script>
+    <button onclick="executar()">Executar</button>
+    <div id="divConsole"></div>
+</body>
+</html>
+<script>
+    function executar(){
+        var conteudoConsole = document.getElementByClassName("view-lines");
+        var divConsole = document.getElementById("divConsole");
+            divConsole.innerHTML += editor.value;
+        
+    }
+</script>
