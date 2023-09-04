@@ -1,46 +1,59 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Monaco Editor Example</title>
-    <!-- Inclua os estilos do Monaco Editor -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs/editor/editor.main.css">
 </head>
-<body>
-    <!-- Crie um elemento DOM para conter o editor -->
-    <div id="editor-container" style="height: 500px;"></div>
 
-    <!-- Inclua os scripts do Monaco Editor -->
-    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs/loader.js"></script>
-    <script>
-        // Função de inicialização do editor
-        function initEditor() {
-            require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs' }});
-            require(['vs/editor/editor.main'], function() {
-                var container = document.getElementById('editor-container');
-                var editor = monaco.editor.create(container, {
-                    value: "// First line\nfunction hello() {\n\talert('Hello world!');\n}\n// Last line",
-                    language: 'javascript',
-                    lineNumbers: "on",
-                    roundedSelection: false,
-                    theme: "vs-dark",
+<body onload="initEditor()">
+    <div id="editorContainer" style="height: 500px;"></div>
 
-                });
-            });
-        }
+    <button onclick="executarSCript()">Executar</button>
 
-        // Chame a função de inicialização após a página ser carregada
-        window.onload = initEditor;
-    </script>
-    <button onclick="executar()">Executar</button>
     <div id="divConsole"></div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs/loader.js"></script>
+
 </html>
 <script>
-    function executar(){
-        var conteudoConsole = document.getElementByClassName("view-lines");
-        var divConsole = document.getElementById("divConsole");
-            divConsole.innerHTML += editor.value;
-        
+    var editor;
+    require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs' } });
+
+   
+
+    function initEditor() {
+
+        require(['vs/editor/editor.main'], function () {
+
+            var container = document.getElementById('editorContainer');
+            editor = monaco.editor.create(container, {
+                value: "function exec() {\n\talert('Hello world!');\n}\n",
+                language: 'javascript',
+                lineNumbers: "on",
+                roundedSelection: false,
+                theme: "hc-black",
+
+            });
+
+
+        });
+
     }
+
+    function executarSCript() {
+        var conteudo = editor.getValue(); 
+        conteudo = conteudo.replace("function exec() {", "");
+        var alert = conteudo.replace("alert(", "");
+        if(alert){
+            divConsole.innerHTML = "O uso de alert está bloqueado"
+        }
+
+        conteudo = conteudo.replace("}", "");
+        console.log(conteudo)
+        eval(conteudo);
+    }
+
+
 </script>
